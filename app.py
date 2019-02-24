@@ -1,6 +1,5 @@
 import datetime
 import os
-
 from flask import Flask, render_template, redirect, url_for
 from forms import ItemForm
 from models import Items
@@ -22,12 +21,14 @@ def add_item():
 @app.route("/success")
 def success():
     results = []
- 
     qry = db_session.query(Items)
     results = qry.all()
+    out = "<table><tr><th>Id</th><th>Name</th><th>Quantity</th><th>Description</th><th>Date Added</th></tr>"
 
-    return str(results)
+    for item in results:
+        out+="<tr><td>"+str(item.id)+"</td><td>"+item.name+"</td><td>"+str(item.quantity)+"</td><td>"+item.description+"</td><td>"+str(item.date_added)+"</td></tr>"
+    return out+"</tabe>"
   
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',port=80)
